@@ -5,7 +5,7 @@ class Assignment(models.Model):
   title = models.CharField(max_length=50)
   description = models.TextField()
   dt = models.DateTimeField()
-  type = models.CharField(default="Assignment")
+  type = models.CharField(max_length=50, default="Assignment")
   completed = models.BooleanField(default=False)
 
   def __str__(self):
