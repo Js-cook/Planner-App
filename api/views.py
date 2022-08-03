@@ -21,8 +21,6 @@ def overview(request):
 def get_assignments(request, year, month, day):
   assignments = []
   for assignment in list(Assignment.objects.all()):
-    print(assignment.dt.date())
-    print(datetime.date(year, month, day))
     if assignment.dt.date() == datetime.date(year, month, day):
       serializer = AssignmentSerializer(assignment)
       assignments.append(serializer.data)

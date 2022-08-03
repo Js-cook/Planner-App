@@ -1,0 +1,31 @@
+#month-holder {
+  text-align: center;
+}
+
+#year-holder {
+  text-align: center;
+}
+
+body {
+  margin: 0;
+}
+
+#month-header {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: red;
+}
+
+#calendar {
+  margin: 1rem;
+}
+
+/* .date {
+  display: inline-block;
+  margin-right: 1.5rem;
+} */
+
+.day-col {
+  display: inline-block;
+  
+}

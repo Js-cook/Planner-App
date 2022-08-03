@@ -3,5 +3,66 @@
 {% block title %}Planner{% endblock %}
 
 {% block content %}
+<div id="month-header">
+  <h1 id="month-holder"></h1>
+  <h1 id="year-holder"></h1>
+</div>
+<div id="calendar">
+  <div id="sun" class="day-col">
+    
+  </div>
+  <div id="mon" class="day-col">
+    
+  </div>
+  <div id="tues" class="day-col">
+    
+  </div>
+  <div id="wed" class="day-col">
+    
+  </div>
+  <div id="thur" class="day-col">
+    
+  </div>
+  <div id="fri" class="day-col">
+    
+  </div>
+  <div id="sat" class="day-col">
+    
+  </div>
+</div>
+<script type="text/javascript">
+  const calendar = document.getElementById("calendar")
+  const holder = document.getElementById("month-holder")
+  const yearHolder = document.getElementById("year-holder")
+  const d = new Date()
+  const monthConversion = {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  }
+  const days = ["sun", "mon", "tues", "wed", "thur", "fri", "sat"]
+  const monthVal = d.getMonth() + 1
+  console.log(monthVal)
 
+  holder.innerHTML = monthConversion[monthVal.toString()]
+  yearHolder.innerHTML = d.getFullYear()
+
+  // iterate through days
+  for(let c= new Date(d.getFullYear(), d.getMonth(), 1); c<new Date(d.getFullYear(), d.getMonth() + 1, 1); c.setDate(c.getDate() + 1))
+  {
+    let day = new Date(c).getDay()
+    document.getElementById(days[day]).innerHTML += `
+    <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
+    `
+  }
+</script>
 {% endblock %}
