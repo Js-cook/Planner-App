@@ -41,6 +41,11 @@
     
   </div>
 </div>
+<hr>
+<div id="assignments-block">
+  
+</div>
+
 <script type="text/javascript">
   const calendar = document.getElementById("calendar")
   const holder = document.getElementById("month-holder")
@@ -91,12 +96,12 @@
       let day = new Date(c).getDay()
       if (new Date(c).getDate() != new Date().getDate() || new Date(c).getMonth() != new Date().getMonth() || new Date(c).getFullYear() != new Date().getFullYear()) {
         document.getElementById(days[day]).innerHTML += `
-        <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
+        <h4 class="date"><button onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})">${new Date(c).getDate()}</button></h4>
         `
       }
       else {
         document.getElementById(days[day]).innerHTML += `
-        <h4 id="red"><a href="#">${new Date(c).getDate()}</a></h4>
+        <h4 id="red"><button onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})">${new Date(c).getDate()}</button></h4>
         `
       }
     }
@@ -107,12 +112,25 @@
       let counter = lastDay.getDay() + 1
       while (counter <= 6){
         document.getElementById(days[counter]).innerHTML += `
-        <h4>.</h4>
+        <h4 class="e-date">?</h4>
         `
         counter++
       }
     }
   }
+
+  function getAssignments(year, month, day){
+    const url = `https://planner.p3rplexed.repl.co/api/get-assignments/${year}/${month}/${day}/`
+    console.log(url)
+    fetch(url)
+    .then((resp) => resp.json())
+    .then(function(data){
+      for(let i=0; i<data.length; i++){
+        console.log(data[i].title)
+      }
+    })
+  }
+    
   window.onload = () => {
     // const d = new Date()
     renderCalendar(d)
