@@ -17,15 +17,18 @@ body {
 }
 
 #calendar {
-  margin: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 /* .date {
-  display: inline-block;
   margin-right: 1.5rem;
 } */
 
 .day-col {
   display: inline-block;
+  margin-right: 7.5rem;
   
 }

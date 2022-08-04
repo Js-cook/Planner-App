@@ -30,11 +30,13 @@
     
   </div>
 </div>
+<button onclick="incrementMonth()">+</button>
+<button onclick="decrementMonth()">-</button>
 <script type="text/javascript">
   const calendar = document.getElementById("calendar")
   const holder = document.getElementById("month-holder")
   const yearHolder = document.getElementById("year-holder")
-  const d = new Date()
+  let d = new Date()
   const monthConversion = {
     "1": "January",
     "2": "February",
@@ -50,19 +52,55 @@
     "12": "December"
   }
   const days = ["sun", "mon", "tues", "wed", "thur", "fri", "sat"]
-  const monthVal = d.getMonth() + 1
-  console.log(monthVal)
 
-  holder.innerHTML = monthConversion[monthVal.toString()]
-  yearHolder.innerHTML = d.getFullYear()
+  function incrementMonth(){
+    d = new Date(d).setMonth(new Date(d).getMonth() + 1)
+    renderCalendar(new Date(d))
+  }
 
-  // iterate through days
-  for(let c= new Date(d.getFullYear(), d.getMonth(), 1); c<new Date(d.getFullYear(), d.getMonth() + 1, 1); c.setDate(c.getDate() + 1))
-  {
-    let day = new Date(c).getDay()
-    document.getElementById(days[day]).innerHTML += `
-    <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
-    `
+  function decrementMonth(){
+    d = new Date(d).setMonth(new Date(d).getMonth() - 1)
+    renderCalendar(new Date(d))
+  }
+  
+  function renderCalendar(date){
+    console.log(date)
+    const monthVal = date.getMonth() + 1
+  
+    holder.innerHTML = monthConversion[monthVal.toString()]
+    yearHolder.innerHTML = date.getFullYear()
+
+    // clear calendar (for change)
+    const holders = document.getElementsByClassName("day-col")
+    for(let i=0; i<holders.length; i++){
+      holders[i].innerHTML = ""
+    }
+  
+    // iterate through days
+    for(let c= new Date(date.getFullYear(), date.getMonth(), 1); c<new Date(date.getFullYear(), date.getMonth() + 1, 1); c.setDate(c.getDate() + 1))
+    {
+      let day = new Date(c).getDay()
+      
+      document.getElementById(days[day]).innerHTML += `
+      <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
+      `
+    }
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
+    const ld = new Date(date.getFullYear(), date.getMonth()+1,1)
+    const lastDay = new Date(ld.setDate(ld.getDate() - 1))
+    if (lastDay.getDay() != 6){
+      let counter = lastDay.getDay() + 1
+      while (counter <= 6){
+        document.getElementById(days[counter]).innerHTML += `
+        <h4>.</h4>
+        `
+        counter++
+      }
+    }
+  }
+  window.onload = () => {
+    // const d = new Date()
+    renderCalendar(d)
   }
 </script>
 {% endblock %}
