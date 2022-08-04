@@ -6,6 +6,17 @@
 <div id="month-header">
   <h1 id="month-holder"></h1>
   <h1 id="year-holder"></h1>
+  <button onclick="decrementMonth()" id="decrement">&#60 </button>
+  <button onclick="incrementMonth()" id="increment" style="float: right;">></button>
+</div>
+<div id="date-labels">
+  <h4 class="lab">Su.</h4>
+  <h4 class="lab">Mo.</h4>
+  <h4 class="lab">Tu.</h4>
+  <h4 class="lab">We.</h4>
+  <h4 class="lab">Th.</h4>
+  <h4 class="lab">Fr.</h4>
+  <h4 class="lab">Sa.</h4>
 </div>
 <div id="calendar">
   <div id="sun" class="day-col">
@@ -30,8 +41,6 @@
     
   </div>
 </div>
-<button onclick="incrementMonth()">+</button>
-<button onclick="decrementMonth()">-</button>
 <script type="text/javascript">
   const calendar = document.getElementById("calendar")
   const holder = document.getElementById("month-holder")
@@ -80,10 +89,16 @@
     for(let c= new Date(date.getFullYear(), date.getMonth(), 1); c<new Date(date.getFullYear(), date.getMonth() + 1, 1); c.setDate(c.getDate() + 1))
     {
       let day = new Date(c).getDay()
-      
-      document.getElementById(days[day]).innerHTML += `
-      <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
-      `
+      if (new Date(c).getDate() != new Date().getDate() || new Date(c).getMonth() != new Date().getMonth() || new Date(c).getFullYear() != new Date().getFullYear()) {
+        document.getElementById(days[day]).innerHTML += `
+        <h4 class="date"><a href="#">${new Date(c).getDate()}</a></h4>
+        `
+      }
+      else {
+        document.getElementById(days[day]).innerHTML += `
+        <h4 id="red"><a href="#">${new Date(c).getDate()}</a></h4>
+        `
+      }
     }
     const firstDay = new Date(date.getFullYear(), date.getMonth(), 1)
     const ld = new Date(date.getFullYear(), date.getMonth()+1,1)

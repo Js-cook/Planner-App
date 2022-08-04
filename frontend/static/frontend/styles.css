@@ -1,3 +1,7 @@
+* {
+  font-family: 'Noto Sans', sans-serif;
+}
+
 #month-holder {
   text-align: center;
 }
@@ -6,14 +10,36 @@
   text-align: center;
 }
 
+#increment {
+  float: right;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-size: 25px;
+  margin-right: 1.5rem;
+  cursor: pointer;
+}
+
+#decrement {
+  border: none;
+  font-size: 25px;
+  margin-left: 1.5rem;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 body {
   margin: 0;
+  background-color: black;
 }
 
 #month-header {
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-color: red;
+  background-color: #1bbc9b;
 }
 
 #calendar {
@@ -23,12 +49,35 @@ body {
   justify-content: center;
 }
 
-/* .date {
-  margin-right: 1.5rem;
-} */
+.date a{
+  text-decoration: none;
+  color: white;
+  padding: 0.5rem;
+/*   width: 10px;
+  height: 10px;
+  margin-bottom: 1rem;
+  background-color: white; */
+}
+
+#red a{
+  text-decoration: none;
+  padding: 0.5rem;
+  color: red;
+}
 
 .day-col {
   display: inline-block;
+  margin-right: 7.5rem;
+}
+
+#date-labels {
+  display: flex;
+  justify-content: center;
+/*   margin-right: 7.5rem; */
+}
+
+.lab {
+  color: white;
   margin-right: 7.5rem;
   
 }
