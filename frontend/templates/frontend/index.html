@@ -52,23 +52,20 @@
     <hr class="border text-center border-light border-2" style="width:50%;">
   </div>
   <div id="assignments-block">
-    <h1>Tests/Quizzes</h1>
-    <div id="test">
+    <div id="test" class="container">
       
     </div>
-    <h1>General Assignments</h1>
-    <div id="assignment">
+    <div id="assignment" class="container">
       
     </div>
-    <h1>Essays/Writing</h1>
-    <div id="essay">
+    <div id="essay" class="container">
       
     </div>
-    <h1>Reading</h1>
-    <div id="reading">
+    <div id="reading" class="container">
       
     </div>
   </div>
+  <button class="btn btn-success position-fixed rounded-circle bottom-0 end-0">+</button>
 </div>
 
 <script type="text/javascript">
@@ -121,12 +118,12 @@
       let day = new Date(c).getDay()
       if (new Date(c).getDate() != new Date().getDate() || new Date(c).getMonth() != new Date().getMonth() || new Date(c).getFullYear() != new Date().getFullYear()) {
         document.getElementById(days[day]).innerHTML += `
-        <h4 class="date"><button onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})" class="btn btn-dark">${new Date(c).getDate()}</button></h4>
+        <h4><button id="${new Date(c).getDate()}" onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})" class="date btn btn-dark">${new Date(c).getDate()}</button></h4>
         `
       }
       else {
         document.getElementById(days[day]).innerHTML += `
-        <h4 id="red"><button class="btn btn-danger" onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})">${new Date(c).getDate()}</button></h4>
+        <h4 id="red"><button class="date btn btn-danger" onclick="getAssignments(${new Date(c).getFullYear()}, ${new Date(c).getMonth()+1}, ${new Date(c).getDate()})">${new Date(c).getDate()}</button></h4>
         `
       }
     }
@@ -137,7 +134,7 @@
       let counter = lastDay.getDay() + 1
       while (counter <= 6){
         document.getElementById(days[counter]).innerHTML += `
-        <h4 class="e-date invisible">?</h4>
+        <h4 class="e-date invisible"><button>?</button></h4>
         `
         counter++
       }
@@ -151,10 +148,21 @@
     const testHolder = document.getElementById("test")
     const essayHolder = document.getElementById("essay")
     const readingHolder = document.getElementById("reading")
+    assignHolder.innerHTML = ""
+    testHolder.innerHTML = ""
+    essayHolder.innerHTML = ""
+    readingHolder.innerHTML = ""
+    const clickedBtn = document.getElementById(day)
     let isTest = false
     let isAssign = false
     let isEssay = false
     let isReading = false
+
+    let blueBtns = document.getElementsByClassName("btn-primary")
+    if(blueBtns.length > 0){
+      blueBtns[0].className = "btn btn-dark"
+    }
+    clickedBtn.className = "btn btn-primary"
     
     fetch(url)
     .then((resp) => resp.json())
