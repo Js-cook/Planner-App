@@ -23,7 +23,7 @@
       <h4 class="lab col">Sa.</h4>
     </div>
   </div>
-  <div id="calendar" class="container" style="height:100%;">
+  <div id="calendar" class="container" style="">
     <div class="row">
       <div id="sun" class="day-col col" style="align-self: end;">
         
@@ -48,9 +48,26 @@
       </div>
     </div>
   </div>
-  <hr>
+  <div class="d-flex justify-content-center mt-2">
+    <hr class="border text-center border-light border-2" style="width:50%;">
+  </div>
   <div id="assignments-block">
-    
+    <h1>Tests/Quizzes</h1>
+    <div id="test">
+      
+    </div>
+    <h1>General Assignments</h1>
+    <div id="assignment">
+      
+    </div>
+    <h1>Essays/Writing</h1>
+    <div id="essay">
+      
+    </div>
+    <h1>Reading</h1>
+    <div id="reading">
+      
+    </div>
   </div>
 </div>
 
@@ -130,11 +147,68 @@
   function getAssignments(year, month, day){
     const url = `https://planner.p3rplexed.repl.co/api/get-assignments/${year}/${month}/${day}/`
     console.log(url)
+    const assignHolder = document.getElementById("assignment")
+    const testHolder = document.getElementById("test")
+    const essayHolder = document.getElementById("essay")
+    const readingHolder = document.getElementById("reading")
+    let isTest = false
+    let isAssign = false
+    let isEssay = false
+    let isReading = false
+    
     fetch(url)
     .then((resp) => resp.json())
     .then(function(data){
       for(let i=0; i<data.length; i++){
-        console.log(data[i].title)
+        // console.log(data[i].title)
+        if(data[i].type == "Test"){
+          if(isTest == false){
+            testHolder.innerHTML += `<h1>Tests/Quizzes</h1>`
+            isTest = true
+          }
+          testHolder.innerHTML += `
+          <div class="container border border-danger border-2 rounded text-light p-2">
+            <h2>${data[i].title}</h2>
+            <p>${data[i].description}</p>
+          </div>
+          `
+        }
+        else if (data[i].type == "Assignment"){
+          if(isAssign == false){
+            assignHolder.innerHTML += `<h1>General Assignments</h1>`
+            isAssign = true
+          }
+          assignHolder.innerHTML += `
+          <div class="container border border-primary border-2 rounded text-light p-2">
+            <h2>${data[i].title}</h2>
+            <p>${data[i].description}</p>
+          </div>
+          `
+        }
+        else if (data[i].type == "Reading"){
+          if(isReading == false){
+            readingHolder.innerHTML += `<h1>Reading</h1>`
+            isReading = true
+          }
+          readingHolder.innerHTML += `
+          <div class="container border border-warning border-2 rounded text-light p-2">
+            <h2>${data[i].title}</h2>
+            <p>${data[i].description}</p>
+          </div>
+          `
+        }
+        else {
+          if(isEssay == false){
+            essayHolder.innerHTML += `<h1>Essays/Writing</h1>`
+            isEssay = true
+          }
+          essayHolder.innerHTML += `
+          <div class="container border border-info border-2 rounded text-light p-2">
+            <h2>${data[i].title}</h2>
+            <p>${data[i].description}</p>
+          </div>
+          `
+        }
       }
     })
   }
