@@ -74,11 +74,29 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <div id="form-wrapper">
+            <form class="container">
+              <label for="title" class="form-label">Assignment Title</label>
+              <input type="text" name="title" id="title" placeholder="ex. Problem set 3" class="bg-dark text-light form-control" required>
+              <label class="form-label mt-2" for="desc">Description</label>
+              <textarea id="desc" class="form-control bg-dark text-light" rows="4" cols="50" name="desc" placeholder="ex. Problems 15-20" required></textarea>
+              <label for="datetime" class="form-label mt-2">Date/Time</label>
+              <input id="datetime" name="datetime" class="form-control bg-dark text-light" type="datetime-local" required>
+              <label for="type" class="form-label mt-2">Assignment Type</label>
+              <select id="type" class="form-select bg-dark text-light" name="type">
+                <option value="Assignment">Assignment</option>
+                <option value="Test">Test/Quiz</option>
+                <option value="Essay">Essay</option>
+                <option value="Reading">Reading</option>
+              </select>
+              <div class="d-flex justify-content-center">
+                <input type="submit" class="mt-2 btn btn-success" value="Create">
+              </div>
+            </form>
+          </div>
         </div>
         <div class="modal-footer" style="border-top-color: grey;">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-success">Create</button>
         </div>
       </div>
     </div>
@@ -237,6 +255,42 @@
       }
     })
   }
+
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+  const wrapper = document.getElementById("form-wrapper")
+  wrapper.addEventListener("submit", (e) => {
+    e.preventDefault()
+    const title = document.getElementById("title").value
+    const desc = document.getElementById("desc").value
+    const dt = new Date(document.getElementById("datetime").value).getTime()
+    console.log(new Date(document.getElementById("datetime").value).getTime())
+    const type = document.getElementById("type").value
+    const url = "https://planner.p3rplexed.repl.co/api/new-assignment/"
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        "X-CSRFToken": csrftoken,
+      },
+      body:JSON.stringify({"title": title, "description": desc, "dt": dt, "type": type})
+    })
+  })
     
   window.onload = () => {
     // const d = new Date()

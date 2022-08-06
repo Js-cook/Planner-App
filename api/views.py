@@ -32,3 +32,13 @@ def update_status(request, id):
   assignment.completed = True
   return Response("Assignment Completed")
 
+@api_view(["POST"])
+def create_assignment(request):
+  data = request.data
+  dt_obj = datetime.datetime.fromtimestamp(data["dt"]//1000)
+  serializer = AssignmentSerializer(data={"title":data['title'], "description":data["description"], "dt":dt_obj, "type":data['type']})
+  if serializer.is_valid():
+    serializer.save()
+    return Response("Assignment created successfully")
+  else:
+    return Response("Something went wrong...")
