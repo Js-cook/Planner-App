@@ -8,10 +8,15 @@
   <h1 id="year-holder"></h1>
   <div class="container d-flex justify-content-between">
     <button onclick="decrementMonth()" id="decrement" class="btn btn-light">&#60 </button>
+    <button class="btn" id="month-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+    </button>
     <button onclick="incrementMonth()" id="increment" class="btn btn-light">></button>
   </div>
 </div>
-<div class="bg-dark text-white overflow-scroll" style="height: 100%;">
+<div class="bg-dark text-white overflow-scroll" style="height: 100%;" id="cal-view">
   <div id="date-labels" class="container d-flex justify-content-center pt-3 pb-3">
     <div class="row gx-5">
       <h4 class="lab col">Su.</h4>
@@ -101,6 +106,9 @@
       </div>
     </div>
   </div>
+</div>
+<div class="bg-dark text-white overflow-scroll d-none" style="height: 100%;" id="block-view">
+  <h1>hi</h1>
 </div>
 
 <script type="text/javascript">
@@ -303,6 +311,21 @@
 
   function clearForm(){
     document.getElementById("form").reset()
+  }
+
+  document.getElementById("month-btn").onclick = () => {
+    const calContainer = document.getElementById("cal-view")
+    const blockContainer = document.getElementById("block-view")
+    if (!calContainer.classList.contains("d-none")){
+      console.log("changing to block")
+      calContainer.className += " d-none"
+      blockContainer.className = "bg-dark text-white overflow-scroll"
+    }
+    else {
+      console.log("changing to calendar")
+      blockContainer.className += " d-none"
+      calContainer.className = "bg-dark text-white overflow-scroll"
+    }
   }
     
   window.onload = () => {
