@@ -11,9 +11,9 @@
     <button onclick="incrementMonth()" id="increment" class="btn btn-light">></button>
   </div>
 </div>
-<div class="bg-dark text-white overflow-hidden" style="height: 100%;">
-  <div id="date-labels" class="container pt-3 pb-3">
-    <div class="row">
+<div class="bg-dark text-white overflow-scroll" style="height: 100%;">
+  <div id="date-labels" class="container d-flex justify-content-center pt-3 pb-3">
+    <div class="row gx-5">
       <h4 class="lab col">Su.</h4>
       <h4 class="lab col">Mo.</h4>
       <h4 class="lab col">Tu.</h4>
@@ -23,8 +23,8 @@
       <h4 class="lab col">Sa.</h4>
     </div>
   </div>
-  <div id="calendar" class="container" style="">
-    <div class="row">
+  <div id="calendar" class="container d-flex justify-content-center" style="">
+    <div class="row gx-5">
       <div id="sun" class="day-col col" style="align-self: end;">
         
       </div>
@@ -71,11 +71,11 @@
       <div class="modal-content" style="background-color: #212429;">
         <div class="modal-header" style="border-bottom-color: grey;">
           <h5 class="modal-title" id="exampleModalLabel">New Assignment</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" id="close-btn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div id="form-wrapper">
-            <form class="container">
+            <form class="container" id="form">
               <label for="title" class="form-label">Assignment Title</label>
               <input type="text" name="title" id="title" placeholder="ex. Problem set 3" class="bg-dark text-light form-control" required>
               <label class="form-label mt-2" for="desc">Description</label>
@@ -197,7 +197,14 @@
     if(blueBtns.length > 0){
       blueBtns[0].className = "btn btn-dark"
     }
-    clickedBtn.className = "btn btn-primary"
+
+    // fix this later
+    try {
+      clickedBtn.className = "btn btn-primary"
+    }
+    catch(err){
+      
+    }
     
     fetch(url)
     .then((resp) => resp.json())
@@ -282,6 +289,8 @@
     console.log(new Date(document.getElementById("datetime").value).getTime())
     const type = document.getElementById("type").value
     const url = "https://planner.p3rplexed.repl.co/api/new-assignment/"
+    clearForm()
+    document.getElementById("close-btn").click()
     fetch(url, {
       method: "POST",
       headers: {
@@ -291,6 +300,10 @@
       body:JSON.stringify({"title": title, "description": desc, "dt": dt, "type": type})
     })
   })
+
+  function clearForm(){
+    document.getElementById("form").reset()
+  }
     
   window.onload = () => {
     // const d = new Date()
