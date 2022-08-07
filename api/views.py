@@ -27,6 +27,15 @@ def get_assignments(request, year, month, day):
   return Response(assignments)
 
 @api_view(["GET"])
+def get_month_assignments(request, month, year):
+  assignments = []
+  for assignment in list(Assignment.objects.all()):
+    if assignment.dt.month() == datetime.datetime(year, month, 1).month() and assignment.dt.year() == datetime.datetime(year, month, 1).year():
+      serializer = AssignmentSerializer(assignment)
+      assignments.append(serializer.data)
+  return Response(assignments)
+
+@api_view(["GET"])
 def update_status(request, id):
   assignment = Assignment.objects.get(id=id)
   assignment.completed = True
