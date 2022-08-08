@@ -108,7 +108,9 @@
   </div>
 </div>
 <div class="bg-dark text-white overflow-scroll d-none" style="height: 100%;" id="block-view">
-  <h1>hi</h1>
+  <div id="a-block" class="container d-flex justify-content-center">
+    
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -326,6 +328,11 @@
       blockContainer.className += " d-none"
       calContainer.className = "bg-dark text-white overflow-scroll"
     }
+  }
+
+  function blockView(){
+    const block = document.getElementById("a-block")
+    
   }
     
   window.onload = () => {

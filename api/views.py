@@ -30,7 +30,7 @@ def get_assignments(request, year, month, day):
 def get_month_assignments(request, month, year):
   assignments = []
   for assignment in list(Assignment.objects.all()):
-    if assignment.dt.month() == datetime.datetime(year, month, 1).month() and assignment.dt.year() == datetime.datetime(year, month, 1).year():
+    if assignment.dt.month == datetime.datetime(year, month, 1).month and assignment.dt.year == datetime.datetime(year, month, 1).year:
       serializer = AssignmentSerializer(assignment)
       assignments.append(serializer.data)
   return Response(assignments)
