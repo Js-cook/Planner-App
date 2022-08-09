@@ -8,5 +8,8 @@ class Assignment(models.Model):
   type = models.CharField(max_length=50, default="Assignment")
   completed = models.BooleanField(default=False)
 
+  class Meta:
+    ordering = ['-dt']
+    
   def __str__(self):
     return self.title

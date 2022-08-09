@@ -107,8 +107,8 @@
     </div>
   </div>
 </div>
-<div class="bg-dark text-white overflow-scroll d-none" style="height: 100%;" id="block-view">
-  <div id="a-block" class="container d-flex justify-content-center">
+<div class="bg-dark text-white overflow-scroll d-none mt-4" style="height: 100%;" id="block-view">
+  <div id="a-block" class="container text-center">
     
   </div>
 </div>
@@ -190,6 +190,7 @@
     const url = `https://planner.p3rplexed.repl.co/api/get-assignments/${year}/${month}/${day}/`
     console.log(url)
     const assignHolder = document.getElementById("assignment")
+    assignHolder.name = day
     const testHolder = document.getElementById("test")
     const essayHolder = document.getElementById("essay")
     const readingHolder = document.getElementById("reading")
@@ -226,48 +227,107 @@
             testHolder.innerHTML += `<h1>Tests/Quizzes</h1>`
             isTest = true
           }
-          testHolder.innerHTML += `
-          <div class="container border border-danger border-2 rounded text-light p-2">
-            <h2>${data[i].title}</h2>
-            <p>${data[i].description}</p>
-          </div>
-          `
+          if (data[i].completed != true){
+            testHolder.innerHTML += `
+            <div class="container border border-danger border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2>${data[i].title}</h2>
+              <button class="btn btn-outline-danger" onclick="markCompleted(${data[i].id})">X</button>
+              </div>
+              <p>${data[i].description}</p>
+            </div>
+            `
+          }
+          else {
+            testHolder.innerHTML += `
+            <div class="container border border-danger border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2><strike>${data[i].title}</strike</h2>
+              </div>
+              <p><strike>${data[i].description}<strike></p>
+            </div>
+            `
+          }
         }
         else if (data[i].type == "Assignment"){
           if(isAssign == false){
             assignHolder.innerHTML += `<h1>General Assignments</h1>`
             isAssign = true
           }
-          assignHolder.innerHTML += `
-          <div class="container border border-primary border-2 rounded text-light p-2">
-            <h2>${data[i].title}</h2>
-            <p>${data[i].description}</p>
-          </div>
-          `
+          if (data[i].completed != true){
+            assignHolder.innerHTML += `
+            <div class="container border border-primary border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2>${data[i].title}</h2>
+              <button class="btn btn-outline-primary" onclick="markCompleted(${data[i].id})">X</button>
+              </div>
+              <p>${data[i].description}</p>
+            </div>
+            `
+          }
+          else {
+            assignHolder.innerHTML += `
+            <div class="container border border-primary border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2><strike>${data[i].title}</strike></h2>
+              </div>
+              <p><strike>${data[i].description}</strike></p>
+            </div>
+            `
+          }
         }
         else if (data[i].type == "Reading"){
           if(isReading == false){
             readingHolder.innerHTML += `<h1>Reading</h1>`
             isReading = true
           }
-          readingHolder.innerHTML += `
-          <div class="container border border-warning border-2 rounded text-light p-2">
-            <h2>${data[i].title}</h2>
-            <p>${data[i].description}</p>
-          </div>
-          `
+          if (data[i].completed != true){
+            readingHolder.innerHTML += `
+            <div class="container border border-warning border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2>${data[i].title}</h2>
+              <button class="btn btn-outline-warning" onclick="markCompleted(${data[i].id})">X</button>
+              </div>
+              <p>${data[i].description}</p>
+            </div>
+            `
+          }
+          else {
+            readingHolder.innerHTML += `
+            <div class="container border border-warning border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2><strike>${data[i].title}</strike></h2>
+              </div>
+              <p><strike>${data[i].description}</strike></p>
+            </div>`
+          }
         }
         else {
           if(isEssay == false){
             essayHolder.innerHTML += `<h1>Essays/Writing</h1>`
             isEssay = true
           }
-          essayHolder.innerHTML += `
-          <div class="container border border-info border-2 rounded text-light p-2">
-            <h2>${data[i].title}</h2>
-            <p>${data[i].description}</p>
-          </div>
-          `
+          if (data[i].completed != true){
+            essayHolder.innerHTML += `
+            <div class="container border border-info border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2>${data[i].title}</h2>
+              <button class="btn btn-outline-info" onclick="markCompleted(${data[i].id})">X</button>
+              </div>
+              <p>${data[i].description}</p>
+            </div>
+            `
+          }
+          else {
+            essayHolder.innerHTML += `
+            <div class="container border border-info border-2 rounded text-light p-2">
+              <div class="d-flex justify-content-between">
+              <h2><strike>${data[i].title}</strike></h2>
+              </div>
+              <p><strike>${data[i].description}</strike></p>
+            </div>
+            `
+          }
         }
       }
     })
@@ -322,6 +382,7 @@
       console.log("changing to block")
       calContainer.className += " d-none"
       blockContainer.className = "bg-dark text-white overflow-scroll"
+      blockView()
     }
     else {
       console.log("changing to calendar")
@@ -332,7 +393,42 @@
 
   function blockView(){
     const block = document.getElementById("a-block")
-    
+    const url = `https://planner.p3rplexed.repl.co/api/get-month-assignments/${d.getMonth()+1}/${d.getFullYear()}/`
+    fetch(url)
+    .then((resp) => resp.json())
+    .then((data) => {
+      for (let i=0; i<data.length; i++){
+        let date = new Date(data[i].dt)
+        if (data[i].type == "Test"){
+          block.innerHTML += `
+          <div class="container border border-danger border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          `
+        }
+        else if (data[i].type == "Assignment"){
+          block.innerHTML += `
+          <div class="container border border-primary 
+border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>`
+        }
+        else if (data[i].type == "Reading"){
+          block.innerHTML += `
+          <div class="container border border-warning border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          `
+        }
+        else {
+          block.innerHTML += `
+          <div class="container border border-info border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          `
+        }
+      }
+    })
+  }
+
+  function markCompleted(id){
+    const selectedDay = document.getElementById("assignment").name
+    const url = `https://planner.p3rplexed.repl.co/api/update-status/${id}/`
+    fetch(url)
+    // rerender assignment blocks
+    getAssignments(d.getFullYear(), d.getMonth()+1, selectedDay)
   }
     
   window.onload = () => {

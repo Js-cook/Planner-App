@@ -39,6 +39,7 @@ def get_month_assignments(request, month, year):
 def update_status(request, id):
   assignment = Assignment.objects.get(id=id)
   assignment.completed = True
+  assignment.save()
   return Response("Assignment Completed")
 
 @api_view(["POST"])
