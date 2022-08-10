@@ -393,6 +393,7 @@
 
   function blockView(){
     const block = document.getElementById("a-block")
+    block.innerHTML = ""
     const url = `https://planner.p3rplexed.repl.co/api/get-month-assignments/${d.getMonth()+1}/${d.getFullYear()}/`
     fetch(url)
     .then((resp) => resp.json())
@@ -400,24 +401,32 @@
       for (let i=0; i<data.length; i++){
         let date = new Date(data[i].dt)
         if (data[i].type == "Test"){
+          if (data[i].completed != true){
           block.innerHTML += `
-          <div class="container border border-danger border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          <div class="container border border-danger border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p><button class="btn btn-outline-danger" onclick="markCompletedBlock(${data[i].id})">X</button></div>
           `
+          }
         }
         else if (data[i].type == "Assignment"){
+          if (data[i].completed != true){
           block.innerHTML += `
           <div class="container border border-primary 
-border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>`
+border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p><button class="btn btn-outline-primary" onclick="markCompletedBlock(${data[i].id})">X</button></div>`
+          }
         }
         else if (data[i].type == "Reading"){
+          if (data[i].completed != true){
           block.innerHTML += `
-          <div class="container border border-warning border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          <div class="container border border-warning border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p><button class="btn btn-outline-warning" onclick="markCompletedBlock(${data[i].id})">X</button></div>
           `
+          }
         }
         else {
+          if (data[i].completed != true){
           block.innerHTML += `
-          <div class="container border border-info border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p></div>
+          <div class="container border border-info border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${date.getDate()}/${date.getFullYear()} - ${date.getHours()}:${String(date.getMinutes()).padStart(2,"0")}</h2><p>${data[i].description}</p><button class="btn btn-outline-info" onclick="markCompletedBlock(${data[i].id})">X</button></div>
           `
+          }
         }
       }
     })
@@ -429,6 +438,12 @@ border-2 rounded text-light p-2 mt-3"><h2>${data[i].title} ${date.getMonth()}/${
     fetch(url)
     // rerender assignment blocks
     getAssignments(d.getFullYear(), d.getMonth()+1, selectedDay)
+  }
+
+  function markCompletedBlock(id){
+    const url = `https://planner.p3rplexed.repl.co/api/update-status/${id}/`
+    fetch(url)
+    blockView()
   }
     
   window.onload = () => {
